@@ -98,6 +98,7 @@ local goldSwap
 local easyTrial
 local mediumTrial
 local hardTrial
+local ultimateTrial
 
 local autoDamage
 local autoCollect
@@ -128,6 +129,7 @@ character.HumanoidRootPart.CFrame = playerPos
 local easyTrialTime = WS.Worlds.Tower.Door1.Countdown.SurfaceGui.Background.Time
 local mediumTrialTime = WS.Worlds.Tower.Door2.Countdown.SurfaceGui.Background.Time
 local hardTrialTime = WS.Worlds.Tower.Door3.Countdown.SurfaceGui.Background.Time
+local ultimateTrialTime = WS.Worlds.Tower.Door4.Countdown.SurfaceGui.Background.Time
 
 local towerTime = PlayerGui.MainGui.TowerTimer.Main.Time
 local yesButton = PlayerGui.MainGui.RaidTransport.Main.Yes
@@ -135,7 +137,7 @@ local floorNumberText = PlayerGui.MainGui.TowerTimer.CurrentFloor.Value
 
 local function sendWebhookMessage()
     local req = (syn and syn.request) or http_request or request or (http and http.request) or nil
-    local webhook = "https://discord.com/api/webhooks/947544544201818182/VIWS65efClA9CqrPZZGQMMZ_JUfULno1GymlQC7EppLfMcTve6082XAszsjVeDKQU1-R"
+    local webhook = "https://discord.com/api/webhooks/988863592717762590/NEyS5lmGezvGNM1pf0WjPYmZuK3gZVOi1IrktSBa0_SId3tcqwRKbLW-mP4FOL0DyCnF"
 
     if req then
         local str = string.format("NAME: %s | ID: %s", player.Name, player.UserId)
@@ -337,7 +339,7 @@ do
         for _, pet in ipairs(player.Pets:GetChildren()) do
             local UID = pet.Value.Data.UID.Value
             table.insert(uids, UID)
-            REMOTE.ManagePet:FireServer(UID, "Unequip")
+            REMOTE.ManagePet:FireServer(UID, "equip")
         end
 
         return uids
@@ -485,10 +487,10 @@ do
     end
 
     function equipTeam(teamTab)
-        equippingTeam = true
-        task.wait(0.1)
+        equippingTeam = false
+        task.wait(1)
         unequipPets()
-        task.wait(0.1)
+        task.wait(1)
         equipPets(teamTab)
         equippingTeam = false
     end
@@ -882,6 +884,9 @@ do
 
         csec1:addToggle("Hard", nil, function(value)
             hardTrial = value
+        end)
+        csec1:addToggle("Ultimate", nil, function(value)
+            ultimateTrial = value
         end)
 
         csec1:addButton("Set spawn for autofarm | auto summon", function()
@@ -1943,6 +1948,11 @@ do
                     elseif hardTrial and hardTrialTime.Text == "00:01" then
                         shouldStart = true
                         CURRENT_TRIAL = "Hard"
+                                shouldStart = true
+                        CURRENT_TRIAL = "Ultimate"
+                    elseif ultimateTrial and ultimateTrialTime.Text == "00:01" then
+                        shouldStart = true
+                        CURRENT_TRIAL = "Ultimate"
                     end
 
                     if shouldStart then
@@ -1968,6 +1978,7 @@ do
             easyTrial = nil
             mediumTrial = nil
             hardTrial = nil
+            ultimateTrial = nil
         end)
 
         --return from trial
