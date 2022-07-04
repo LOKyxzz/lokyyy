@@ -1947,9 +1947,7 @@ do
                         CURRENT_TRIAL = "Medium"
                     elseif hardTrial and hardTrialTime.Text == "00:01" then
                         shouldStart = true
-                        CURRENT_TRIAL = "Hard"
-                                shouldStart = true
-                        CURRENT_TRIAL = "Ultimate"
+                        CURRENT_TRIAL = "Hard"                       
                     elseif ultimateTrial and ultimateTrialTime.Text == "00:01" then
                         shouldStart = true
                         CURRENT_TRIAL = "Ultimate"
